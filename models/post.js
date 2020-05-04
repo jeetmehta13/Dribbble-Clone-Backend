@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT('long'),
             allowNull: false
         },
+        postLink: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        originalName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
     });
     Post.associate = models => {
         models.post.hasMany(models.tag, {

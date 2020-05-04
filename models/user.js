@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        personalbio: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     });
     User.associate = models => {
         models.user.hasMany(models.post, {
@@ -27,6 +31,18 @@ module.exports = (sequelize, DataTypes) => {
         });
         models.user.hasMany(models.like, {
             foreignKey: 'likedBy',
+            sourceKey: 'userId'
+        });
+        models.user.hasMany(models.follows, {
+            foreignKey: 'userId',
+            sourceKey: 'userId'
+        });
+        models.user.hasMany(models.userfollows, {
+            foreignKey: 'userId',
+            sourceKey: 'userId'
+        });
+        models.user.hasMany(models.userfollows, {
+            foreignKey: 'followedId',
             sourceKey: 'userId'
         });
     };

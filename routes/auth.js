@@ -10,18 +10,54 @@ exports.register = async(req, res) => {
     let [err, newUser] = await to(user.findOne({
         where: Sequelize.or({ email: req.body.email }, { userId: req.body.userId })
     }));
-    if (err) res.sendError(err);
-    if(newUser) res.sendError(null, 'User Already Exists', 409);
+    if (err) return res.sendError(err);
+    if(newUser) return res.sendError(null, 'User Already Exists', 409);
     [err, salt] = await to(bcrypt.genSalt(10));
-    if (err) res.sendError(err);
+    if (err) return res.sendError(err);
     [err, hash] = await to(bcrypt.hash(req.body.password, salt));
-    if (err) res.sendError(err);
+    if (err) return res.sendError(err);
     [err, newUser] = await to(user.create({
         name: req.body.name,
         email: req.body.email,
         userId: req.body.userId,
         password: hash
     }));
-    if(err) res.sendError(err);
+    if(err) return res.sendError(err);
     res.sendSuccess('User Registered');
+}
+
+exports.login = async(req, res) => {
+    let [err, userInfo] = await to(user.findOne({
+        where: {
+            email: req.body.email
+        }
+    }));
+    if(err) return res.sendError(err);
+    if(!userInfo) return res.sendError(null, 'Incorrect Email', 404);
+    [err, authorized] = await to(bcrypt.compare(req.body.password, userInfo.password));
+    if(err) return res.sendError(err);
+    if(!authorized) return res.sendError(null, 'Incorrect Password', 404);
+    userInfo.password = undefined;
+    delete userInfo.password;
+    req.session.key = userInfo;
+    req.session.save(() => res.sendSuccess(userInfo))
+}
+
+exports.logout = async(req, res) => {
+    if(req.session.key)
+        req.session.destroy(() => res.sendSuccess(null, 'Logged Out'));
+    else res.sendSuccess(null, 'Logged Out');
+}
+
+exports.status = async(req, res) => {
+    if(req.session.key)
+        res.sendSuccess({
+            Loggedin: true,
+            SessionDetails: {
+                name: req.session.key.name,
+                userId: req.session.key.userId,
+                email: req.session.key.email
+            }
+        });
+    else res.sendSuccess({ Loggedin: false });
 }
