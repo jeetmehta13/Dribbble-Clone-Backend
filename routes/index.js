@@ -3,7 +3,7 @@ const router = express.Router();
 
 const validator = require('../utils/validator');
 const schemas = require('../schemas');
-
+const user = require('./user');
 const auth = require('./auth');
 const post = require('./post');
 const userfollows = require('./userfollows');
@@ -11,13 +11,13 @@ const like = require('./like');
 
 function isNotLoggedIn(req, res, next) {
     if (!req.session.key) return next();
-    else res.redirect('/');
+    else res.sendError(null, 'Already Logged In');
 }
 
 function isLoggedIn(req, res, next)
 {
     if (req.session.key) return next();
-    else res.redirect('/');
+    else res.sendError(null, 'Not Logged in');
 }
 
 router.post(
@@ -95,6 +95,18 @@ router.get(
     isLoggedIn,
     validator(schemas.post.postContent),
     post.postContent
+);
+
+router.get(
+    '/userPosts/:userid',
+    isLoggedIn,
+    post.userPosts
+);
+
+router.get(
+    '/getUserDetails/:userid',
+    isLoggedIn,
+    user.getUserDetails
 )
 
 module.exports = router;

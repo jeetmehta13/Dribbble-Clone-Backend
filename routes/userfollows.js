@@ -29,7 +29,7 @@ router.setFollowing = async(req, res) => {
             status: req.body.status
         }));
         if(err) return res.sendError(err);
-        res.sendSuccess(null, 'Followed!');
+        return res.sendSuccess(null, 'Followed!');
     }
     // console.log(status['status']);
     [err] = await to(userfollows.update(
@@ -39,12 +39,12 @@ router.setFollowing = async(req, res) => {
         {
             where: {
                 userId: req.session.key.userId,
-                followedId: req.body.userId
+                followedId: req.body.userId,
             }
         }
     ));
     if(err) return res.sendError(err);
-    return res.sendSuccess();
+    return res.sendSuccess(null, 'Followed!');
 }
 
 module.exports = router;
