@@ -229,22 +229,6 @@ router.postContent = async(req, res) => {
 }
 
 router.userPosts = async(req, res) => {
-    if (req.session.key === undefined)
-        return res.sendError(null, 'Not Logged In');
-    let [err, following] = await to(userfollows.findAll({
-        raw: true,
-        where: {
-            userId: req.session.key.userId
-        },
-        attributes: ['followedId']
-    }));
-    if (err) return res.sendError(err);
-    if (following.length < 1) return res.sendSuccess(null, 'You do not follow anyone');
-    let data = [];
-    for (let i = 0; i < following.length; i++) {
-        const element = following[i];
-        data.push(element.followedId);
-    }
     let getPosts;
     [err, getPosts] = await to(post.findAll({
         raw: true,
