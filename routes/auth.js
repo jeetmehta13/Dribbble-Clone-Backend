@@ -1,6 +1,5 @@
 const { user } = require('../models');
 const to = require('../utils/to');
-const uuidv1 = require('uuid/v1');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcryptjs');
 const express = require('express');
