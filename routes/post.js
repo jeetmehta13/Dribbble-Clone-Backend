@@ -1,6 +1,6 @@
 const { user, post, userfollows, sequelize, like } = require('../models');
 const to = require('../utils/to');
-const uuidv1 = require('uuid/v4');
+const { v1: uuidv1 } = require('uuid');
 const Sequelize = require('sequelize');
 const express = require('express');
 const router = express.Router();
