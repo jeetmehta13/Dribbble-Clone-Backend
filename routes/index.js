@@ -91,9 +91,8 @@ router.get(
 );
 
 router.get(
-    '/getContent',
+    '/getContent/:postId',
     isLoggedIn,
-    validator(schemas.post.postContent),
     post.postContent
 );
 

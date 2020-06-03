@@ -221,7 +221,7 @@ router.postContent = async(req, res) => {
     [err, content] = await to(post.findOne({
         attributes: ['content'],
         where: {
-            postId: req.body.postId
+            postId: req.params.postId
         }
     }));
     if(err) return res.sendError(err);
