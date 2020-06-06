@@ -1,11 +1,13 @@
 const Joi = require('joi');
 
-const getUserDetails = Joi.object({
+const updateDetails = Joi.object({
     body: Joi.object({
-        userId: Joi.string().required().regex(/^\S+$/)
+        userId: Joi.string().required().regex(/^\S+$/),
+        personalbio: Joi.string().required(),
+        name: Joi.string().trim().max(40).required()
     })
 });
 
 module.exports = {
-    getUserDetails
+    updateDetails
 }

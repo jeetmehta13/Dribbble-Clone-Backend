@@ -106,6 +106,13 @@ router.get(
     '/getUserDetails/:userid',
     isLoggedIn,
     user.getUserDetails
-)
+);
+
+router.post(
+    '/updateDetails',
+    isLoggedIn,
+    validator(schemas.user.updateDetails),
+    user.updateDetails
+);
 
 module.exports = router;
