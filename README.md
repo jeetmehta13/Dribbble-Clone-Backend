@@ -1,2 +1,2 @@
-# Blogstastic
-A blog app created for practice
+# Dribbble Clone Backend
+An attempt at creating a social media platform for practice
