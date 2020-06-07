@@ -115,4 +115,16 @@ router.post(
     user.updateDetails
 );
 
+router.get(
+    '/getFollowers/:userId',
+    isLoggedIn,
+    userfollows.getFollowers
+);
+
+router.get(
+    '/getFollowing/:userId',
+    isLoggedIn,
+    userfollows.getFollowing
+);
+
 module.exports = router;
